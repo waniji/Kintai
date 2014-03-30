@@ -16,15 +16,11 @@ my $schema = Kintai::DB::Schema->instance;
 sub db {
     my $c = shift;
     if (!exists $c->{db}) {
-        my $conf = $c->config->{DBI}
-            or die "Missing configuration about DBI";
+        my $conf = $c->config->{Teng}
+            or die "Missing configuration about Teng";
         $c->{db} = Kintai::DB->new(
             schema       => $schema,
             connect_info => [@$conf],
-            # I suggest to enable following lines if you are using mysql.
-            # on_connect_do => [
-            #     'SET SESSION sql_mode=STRICT_TRANS_TABLES;',
-            # ],
         );
     }
     $c->{db};

@@ -1,16 +1,25 @@
 package Kintai::DB::Schema;
 use strict;
 use warnings;
-use utf8;
-
 use Teng::Schema::Declare;
-
-base_row_class 'Kintai::DB::Row';
+table {
+    name 'kintai';
+    pk 'user_id','date';
+    columns (
+        'user_id',
+        'date',
+        'attend_time',
+        'leave_time',
+    );
+};
 
 table {
-    name 'member';
+    name 'user';
     pk 'id';
-    columns qw(id name);
+    columns (
+        'id',
+        'name',
+    );
 };
 
 1;

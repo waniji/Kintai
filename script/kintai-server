@@ -29,7 +29,7 @@ unless (caller) {
     my $max_workers = 4;
 
     require Getopt::Long;
-    require Plack::Loader;
+    require Plack::Loader::Shotgun;
     my $p = Getopt::Long::Parser->new(
         config => [qw(posix_default no_ignore_case auto_help)]
     );
@@ -58,7 +58,7 @@ unless (caller) {
 
     print "Kintai: http://${host}:${port}/\n";
 
-    my $loader = Plack::Loader->load('Starlet',
+    my $loader = Plack::Loader::Shotgun->load('Starlet',
         port        => $port,
         host        => $host,
         max_workers => $max_workers,

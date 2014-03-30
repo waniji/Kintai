@@ -1,0 +1,31 @@
+: cascade "include/layout.tx"
+
+: override content -> {
+
+<form method="post" action="<: uri_for('/kintai') :>">
+    <input type="hidden" name="user_id" value="<: $user_id :>" />
+    Date <input type="text" name="date" />
+    Attend <input type="text" name="attend_time" />
+    Leave <input type="text" name="leave_time" />
+    <input type="submit" value="send" />
+</form>
+<hr>
+
+<table class="table table-bordered">
+  <tr>
+    <th>日付</th>
+    <th>出勤</th>
+    <th>退勤</th>
+    <th>備考</th>
+  </tr>
+: for $kintai -> $kin {
+  <tr>
+    <td><: $kin.date :></td>
+    <td><: $kin.attend_time :></td>
+    <td><: $kin.leave_time :></td>
+    <td>-</td>
+  </tr>
+: }
+</table>
+
+: }
