@@ -4,9 +4,10 @@
 
 <form method="post" action="<: uri_for('/kintai') :>">
     <input type="hidden" name="user_id" value="<: $user_id :>" />
-    Date <input type="text" name="date" />
-    Attend <input type="text" name="attend_time" />
-    Leave <input type="text" name="leave_time" />
+    日付 <input type="text" name="date" />
+    出勤 <input type="text" name="attend_time" />
+    退勤 <input type="text" name="leave_time" />
+    備考 <input type="text" name="remarks" />
     <input type="submit" value="send" />
 </form>
 <hr>
@@ -23,7 +24,7 @@
     <td><: $kin.date :></td>
     <td><: $kin.attend_time :></td>
     <td><: $kin.leave_time :></td>
-    <td>-</td>
+    <td><: $kin.remarks :></td>
   </tr>
 : }
 </table>

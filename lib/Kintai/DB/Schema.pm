@@ -10,6 +10,16 @@ table {
         'date',
         'attend_time',
         'leave_time',
+        'remarks',
+    );
+};
+
+table {
+    name 'sqlite_sequence';
+    pk ;
+    columns (
+        'name',
+        'seq',
     );
 };
 

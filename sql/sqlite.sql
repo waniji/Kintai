@@ -8,6 +8,7 @@ CREATE TABLE IF NOT EXISTS kintai (
     date        CHAR(8) NOT NULL,
     attend_time CHAR(4),
     leave_time  CHAR(4),
+    remarks     CHAR(255),
     PRIMARY KEY(
         user_id,
         date

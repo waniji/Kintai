@@ -58,6 +58,7 @@ get '/kintai' => sub {
             date => $fmt_date,
             attend_time => $fmt_attend_time,
             leave_time => $fmt_leave_time,
+            remarks => $row->remarks,
         };
     }
 
@@ -77,6 +78,7 @@ post '/kintai' => sub {
             date => $c->req->param('date'),
             attend_time => $c->req->param('attend_time'),
             leave_time => $c->req->param('leave_time'),
+            remarks => $c->req->param('remarks'),
         },
     );
 
