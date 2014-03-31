@@ -14,6 +14,29 @@ any '/' => sub {
     });
 };
 
+get '/user/create' => sub {
+    my ($c) = @_;
+    my @users = $c->db->search(
+        user => {}, { order_by => {'id' => 'ASC' }}
+    );
+    return $c->render('user_create.tx' => {
+            users => \@users,
+    });
+};
+
+post '/user/create' => sub {
+    my ($c) = @_;
+    my $name = $c->req->param('name');
+
+    $c->db->insert(
+        user => {
+            name => $name,
+        },
+    );
+
+    return $c->redirect('/user/create');
+};
+
 get '/kintai' => sub {
     my ($c) = @_;
     my $user_id = $c->req->param('user_id');
