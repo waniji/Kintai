@@ -51,8 +51,8 @@ get '/kintai' => sub {
     my @kintai;
     while( my $row = $itr->next ) {
         my $fmt_date = $row->date =~ s!(\d{4})(\d{2})(\d{2})!$1/$2/$3!r;
-        my $fmt_attend_time = $row->attend_time =~ s!(\d{2})(\d{2})(\d{2})!$1:$2:$3!r;
-        my $fmt_leave_time = $row->leave_time =~ s!(\d{2})(\d{2})(\d{2})!$1:$2:$3!r;
+        my $fmt_attend_time = $row->attend_time =~ s!(\d{2})(\d{2})!$1:$2!r;
+        my $fmt_leave_time = $row->leave_time =~ s!(\d{2})(\d{2})!$1:$2!r;
         push @kintai, {
             user_id => $row->user_id,
             date => $fmt_date,

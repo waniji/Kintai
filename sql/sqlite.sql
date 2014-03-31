@@ -6,8 +6,8 @@ CREATE TABLE IF NOT EXISTS user (
 CREATE TABLE IF NOT EXISTS kintai (
     user_id     INTEGER NOT NULL,
     date        CHAR(8) NOT NULL,
-    attend_time CHAR(6),
-    leave_time  CHAR(6),
+    attend_time CHAR(4),
+    leave_time  CHAR(4),
     PRIMARY KEY(
         user_id,
         date
