@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS user (
-    id           INTEGER NOT NULL PRIMARY KEY,
+    id           INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     name         VARCHAR(255)
 );
 
