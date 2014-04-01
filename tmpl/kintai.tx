@@ -2,7 +2,7 @@
 
 : override content -> {
 
-<h2>勤怠</h2>
+<h2>勤怠(<: $year_month :>)</h2>
 
 <hr />
 

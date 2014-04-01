@@ -4,10 +4,21 @@ use warnings;
 use Teng::Schema::Declare;
 table {
     name 'kintai';
-    pk 'user_id','date';
+    pk 'id';
     columns (
+        'id',
         'user_id',
-        'date',
+        'year_month',
+    );
+};
+
+table {
+    name 'kintai_detail';
+    pk 'id';
+    columns (
+        'id',
+        'kintai_id',
+        'day',
         'attend_time',
         'leave_time',
         'remarks',
