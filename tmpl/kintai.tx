@@ -2,15 +2,24 @@
 
 : override content -> {
 
+<h2>勤怠</h2>
+
+<hr />
+
+<h3>勤怠入力</h3>
+
 <form method="post" action="<: uri_for('/kintai') :>">
     <input type="hidden" name="user_id" value="<: $user_id :>" />
-    日付 <input type="text" name="date" />
-    出勤 <input type="text" name="attend_time" />
-    退勤 <input type="text" name="leave_time" />
-    備考 <input type="text" name="remarks" />
+    日付 <input type="text" size="8" maxlength="8" name="date" />
+    出勤 <input type="text" size="8" maxlength="6" name="attend_time" />
+    退勤 <input type="text" size="8" maxlength="6" name="leave_time" />
+    備考 <input type="text" size="30" name="remarks" />
     <input type="submit" value="send" />
 </form>
-<hr>
+
+<hr />
+
+<h3>勤怠一覧</h3>
 
 <table class="table table-bordered">
   <tr>
