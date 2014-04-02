@@ -66,14 +66,10 @@ get '/kintai' => sub {
 
     my @kintai;
     while( my $row = $itr->next ) {
-        my $fmt_date = sprintf( "%04d/%02d/%02d", substr($year_month,0,4), substr($year_month,4,2), $row->day );
-        my $fmt_attend_time = $row->attend_time =~ s!(\d{2})(\d{2})!$1:$2!r;
-        my $fmt_leave_time = $row->leave_time =~ s!(\d{2})(\d{2})!$1:$2!r;
         push @kintai, {
-            user_id => $user_id,
-            date => $fmt_date,
-            attend_time => $fmt_attend_time,
-            leave_time => $fmt_leave_time,
+            date => format_date( $year_month.$row->day ),
+            attend_time => format_time($row->attend_time),
+            leave_time => format_time($row->leave_time),
             remarks => $row->remarks,
         };
     }
@@ -136,6 +132,16 @@ post '/account/logout' => sub {
 sub now_year_month {
     my ($mon,$year) = (localtime)[4,5];
     sprintf( "%04d%02d", $year+1900, $mon+1 );
+}
+
+sub format_date {
+    my $date = shift;
+    $date =~ s!(\d{4})(\d{2})(\d{2})!$1/$2/$3!r;
+}
+
+sub format_time {
+    my $time = shift;
+    $time =~ s!(\d{2})(\d{2})!$1:$2!r;
 }
 
 1;
