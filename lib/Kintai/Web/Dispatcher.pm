@@ -66,18 +66,20 @@ get '/kintai' => sub {
 
     my @kintai;
     while( my $row = $itr->next ) {
+        my $break_time = calc_break_time( $row->attend_time, $row->leave_time );
         push @kintai, {
             date => format_date( $year_month.$row->day ),
             attend_time => format_time($row->attend_time),
             leave_time => format_time($row->leave_time),
+            break_time => $break_time,
             remarks => $row->remarks,
         };
     }
 
     return $c->render('kintai.tx' => {
             user_id => $user_id,
-            kintai => \@kintai,
             year_month => $year_month,
+            kintai => \@kintai,
     });
 };
 
@@ -129,6 +131,33 @@ post '/account/logout' => sub {
     return $c->redirect('/');
 };
 
+sub calc_break_time {
+    my( $attend_time, $leave_time ) = @_;
+
+    my $attend = Time::Piece->strptime( $attend_time, '%H%M' );
+    my $leave = Time::Piece->strptime( $leave_time, '%H%M' );
+
+    my $break_start = Time::Piece->strptime( '1200', '%H%M' );
+    my $break_end = Time::Piece->strptime( '1300', '%H%M' );
+
+    if( $attend >= $break_end || $break_start >= $leave ) {
+        return "0分";
+    }
+
+    $attend = ( $attend > $break_start ? $attend : $break_start );
+    $leave = ( $break_end > $leave ? $leave : $break_end );
+
+    my $diff = $leave - $attend;
+
+    return do {
+        if( $diff->minutes < 60 ) {
+            sprintf( "%d分", $diff->minutes );
+        } elsif( $diff->minutes % 60 ) {
+            sprintf( "%d時間%d分", $diff->minutes / 60, $diff->minutes % 60 );
+        } else {
+            sprintf( "%d時間", $diff->minutes / 60, $diff->minutes % 60 );
+        }
+    };
 }
 
 sub format_date {

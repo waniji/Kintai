@@ -26,6 +26,7 @@
     <th>日付</th>
     <th>出勤</th>
     <th>退勤</th>
+    <th>休憩</th>
     <th>備考</th>
   </tr>
 : for $kintai -> $kin {
@@ -33,6 +34,7 @@
     <td><: $kin.date :></td>
     <td><: $kin.attend_time :></td>
     <td><: $kin.leave_time :></td>
+    <td><: $kin.break_time :></td>
     <td><: $kin.remarks :></td>
   </tr>
 : }
