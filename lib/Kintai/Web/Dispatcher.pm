@@ -2,6 +2,7 @@ package Kintai::Web::Dispatcher;
 use strict;
 use warnings;
 use utf8;
+use Time::Piece;
 use Amon2::Web::Dispatcher::RouterBoom;
 
 any '/' => sub {
@@ -41,12 +42,11 @@ get '/kintai' => sub {
     my ($c) = @_;
 
     my $user_id = $c->req->param('user_id');
-    my $year_month = $c->req->param('year_month') // now_year_month();
+    my $year_month = $c->req->param('year_month') // localtime->strftime("%Y%m");
 
     my $kintai = $c->db->single(
         kintai => { user_id => $user_id, year_month => $year_month }
     );
-
 
     unless($kintai) {
         return $c->render('kintai.tx' => {
@@ -129,19 +129,14 @@ post '/account/logout' => sub {
     return $c->redirect('/');
 };
 
-sub now_year_month {
-    my ($mon,$year) = (localtime)[4,5];
-    sprintf( "%04d%02d", $year+1900, $mon+1 );
 }
 
 sub format_date {
-    my $date = shift;
-    $date =~ s!(\d{4})(\d{2})(\d{2})!$1/$2/$3!r;
+    Time::Piece->strptime($_[0], '%Y%m%d')->ymd("/");
 }
 
 sub format_time {
-    my $time = shift;
-    $time =~ s!(\d{2})(\d{2})!$1:$2!r;
+    Time::Piece->strptime($_[0], '%H%M')->strftime("%H:%M");
 }
 
 1;
