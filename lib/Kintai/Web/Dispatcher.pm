@@ -66,12 +66,14 @@ get '/kintai' => sub {
 
     my @kintai;
     while( my $row = $itr->next ) {
-        my $break_time = calc_break_time( $row->attend_time, $row->leave_time );
+        my $break_minutes = calc_break_minutes( $row->attend_time, $row->leave_time );
+        my $work_minutes = calc_work_minutes( $row->attend_time, $row->leave_time, $break_minutes );
         push @kintai, {
             date => format_date( $year_month.$row->day ),
             attend_time => format_time($row->attend_time),
             leave_time => format_time($row->leave_time),
-            break_time => $break_time,
+            break_time => format_jp_time_from_minutes( $break_minutes ),
+            work_time => format_jp_time_from_minutes( $work_minutes ),
             remarks => $row->remarks,
         };
     }
@@ -131,7 +133,7 @@ post '/account/logout' => sub {
     return $c->redirect('/');
 };
 
-sub calc_break_time {
+sub calc_break_minutes {
     my( $attend_time, $leave_time ) = @_;
 
     my $attend = Time::Piece->strptime( $attend_time, '%H%M' );
@@ -141,7 +143,7 @@ sub calc_break_time {
     my $break_end = Time::Piece->strptime( '1300', '%H%M' );
 
     if( $attend >= $break_end || $break_start >= $leave ) {
-        return "0分";
+        return 0;
     }
 
     $attend = ( $attend > $break_start ? $attend : $break_start );
@@ -149,13 +151,29 @@ sub calc_break_time {
 
     my $diff = $leave - $attend;
 
+    return $diff->minutes;
+}
+
+sub calc_work_minutes {
+    my( $attend_time, $leave_time, $break_minutes ) = @_;
+
+    my $attend = Time::Piece->strptime( $attend_time, '%H%M' );
+    my $leave = Time::Piece->strptime( $leave_time, '%H%M' );
+
+    my $diff = $leave - $attend;
+
+    return $diff->minutes - $break_minutes;
+}
+
+sub format_jp_time_from_minutes {
+    my $minutes = shift;
     return do {
-        if( $diff->minutes < 60 ) {
-            sprintf( "%d分", $diff->minutes );
-        } elsif( $diff->minutes % 60 ) {
-            sprintf( "%d時間%d分", $diff->minutes / 60, $diff->minutes % 60 );
+        if( $minutes < 60 ) {
+            sprintf( "%d分", $minutes );
+        } elsif( $minutes % 60 ) {
+            sprintf( "%d時間%d分", $minutes / 60, $minutes % 60 );
         } else {
-            sprintf( "%d時間", $diff->minutes / 60, $diff->minutes % 60 );
+            sprintf( "%d時間", $minutes / 60, $minutes % 60 );
         }
     };
 }
