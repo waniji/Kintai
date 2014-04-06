@@ -21,14 +21,19 @@
 
 <table class="table table-bordered">
   <tr>
-    <th>日付</th>
-    <th>出勤</th>
-    <th>退勤</th>
-    <th>休憩</th>
-    <th>実働</th>
-    <th>備考</th>
+    <th class="col-xs-1 col-sm-1 col-md-1">日付</th>
+    <th class="col-xs-1 col-sm-1 col-md-1">出勤</th>
+    <th class="col-xs-1 col-sm-1 col-md-1">退勤</th>
+    <th class="col-xs-1 col-sm-1 col-md-1">休憩</th>
+    <th class="col-xs-1 col-sm-1 col-md-1">実働</th>
+    <th class="col-xs-1 col-sm-1 col-md-1">備考</th>
+    <th class="col-xs-1 col-sm-1 col-md-1"></th>
   </tr>
 : for $kintai.keys() -> $day {
+  <form method="post" action="<: uri_for('/kintai/delete') :>">
+  <input type="hidden" name="user_id" value="<: $user_id :>" />
+  <input type="hidden" name="year_month" value="<: $year_month :>" />
+  <input type="hidden" name="kintai_detail_id" value="<: $kintai[$day].kintai_detail_id :>" />
   <tr class="<: $kintai[$day].line_color :>">
     <td><: $kintai[$day].date :></td>
     <td><: $kintai[$day].attend_time :></td>
@@ -36,7 +41,14 @@
     <td><: $kintai[$day].break_time :></td>
     <td><: $kintai[$day].work_time :></td>
     <td><: $kintai[$day].remarks :></td>
+
+    : if( $kintai[$day].kintai_detail_id ) {
+    <td><input class="btn btn-danger btn-xs" type="submit" value="削除" /></td>
+    : } else {
+    <td></td>
+    : }
   </tr>
+  </form>
 : }
   <tr class="success">
     <td>合計</td>
@@ -44,6 +56,7 @@
     <td></td>
     <td></td>
     <td><: $total_work_time :></td>
+    <td></td>
     <td></td>
   </tr>
 </table>

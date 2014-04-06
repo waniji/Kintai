@@ -81,6 +81,7 @@ get '/kintai' => sub {
         $total_work_minutes += $work_minutes;
 
         my $month_row = $month_table->{ $year_month.$row->day };
+        $month_row->{kintai_detail_id} = $row->id;
         $month_row->{date} = format_date( $year_month.$row->day );
         $month_row->{attend_time} = format_time($row->attend_time);
         $month_row->{leave_time} = format_time($row->leave_time);
@@ -136,6 +137,19 @@ post '/kintai' => sub {
             leave_time => $c->req->param('leave_time'),
             remarks => $c->req->param('remarks'),
         },
+    );
+
+    return $c->redirect('/kintai', { user_id => $user_id, year_month => $year_month } );
+};
+
+post '/kintai/delete' => sub {
+    my ($c) = @_;
+    my $user_id = $c->req->param('user_id');
+    my $year_month = $c->req->param('year_month');
+    my $kintai_detail_id = $c->req->param('kintai_detail_id');
+
+    my $kintai = $c->db->delete(
+        kintai_detail => { id => $kintai_detail_id },
     );
 
     return $c->redirect('/kintai', { user_id => $user_id, year_month => $year_month } );
