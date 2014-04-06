@@ -45,6 +45,9 @@ get '/kintai' => sub {
     my $user_id = $c->req->param('user_id');
     my $year_month = $c->req->param('year_month') // localtime->strftime("%Y%m");
 
+    my $next = Time::Piece->strptime( $year_month, '%Y%m' )->add_months(1)->strftime('%Y%m');
+    my $prev = Time::Piece->strptime( $year_month, '%Y%m' )->add_months(-1)->strftime('%Y%m');
+
     my $month_table = create_month_table($year_month);
 
     my $kintai = $c->db->single(
@@ -54,8 +57,11 @@ get '/kintai' => sub {
     unless($kintai) {
         return $c->render('kintai.tx' => {
                 user_id => $user_id,
-                kintai => $month_table,
                 year_month => $year_month,
+                next => $next,
+                prev => $prev,
+                kintai => $month_table,
+                total_work_time => format_jp_time_from_minutes(0),
         });
     }
 
@@ -86,6 +92,8 @@ get '/kintai' => sub {
     return $c->render('kintai.tx' => {
             user_id => $user_id,
             year_month => $year_month,
+            next => $next,
+            prev => $prev,
             kintai => $month_table,
             total_work_time => format_jp_time_from_minutes( $total_work_minutes ),
     });
