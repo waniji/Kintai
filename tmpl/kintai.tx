@@ -30,17 +30,17 @@
     <th>実働</th>
     <th>備考</th>
   </tr>
-: for $kintai -> $kin {
-  <tr>
-    <td><: $kin.date :></td>
-    <td><: $kin.attend_time :></td>
-    <td><: $kin.leave_time :></td>
-    <td><: $kin.break_time :></td>
-    <td><: $kin.work_time :></td>
-    <td><: $kin.remarks :></td>
+: for $kintai.keys() -> $day {
+  <tr class="<: $kintai[$day].line_color :>">
+    <td><: $kintai[$day].date :></td>
+    <td><: $kintai[$day].attend_time :></td>
+    <td><: $kintai[$day].leave_time :></td>
+    <td><: $kintai[$day].break_time :></td>
+    <td><: $kintai[$day].work_time :></td>
+    <td><: $kintai[$day].remarks :></td>
   </tr>
 : }
-  <tr class="info">
+  <tr class="success">
     <td>合計</td>
     <td></td>
     <td></td>
