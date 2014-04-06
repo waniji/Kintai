@@ -65,9 +65,11 @@ get '/kintai' => sub {
     );
 
     my @kintai;
+    my $total_work_minutes = 0;
     while( my $row = $itr->next ) {
         my $break_minutes = calc_break_minutes( $row->attend_time, $row->leave_time );
         my $work_minutes = calc_work_minutes( $row->attend_time, $row->leave_time, $break_minutes );
+        $total_work_minutes += $work_minutes;
         push @kintai, {
             date => format_date( $year_month.$row->day ),
             attend_time => format_time($row->attend_time),
@@ -82,6 +84,7 @@ get '/kintai' => sub {
             user_id => $user_id,
             year_month => $year_month,
             kintai => \@kintai,
+            total_work_time => format_jp_time_from_minutes( $total_work_minutes ),
     });
 };
 

@@ -40,6 +40,14 @@
     <td><: $kin.remarks :></td>
   </tr>
 : }
+  <tr class="info">
+    <td>合計</td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td><: $total_work_time :></td>
+    <td></td>
+  </tr>
 </table>
 
 : }
