@@ -54,7 +54,7 @@ get '/kintai' => sub {
     unless($kintai) {
         return $c->render('kintai.tx' => {
                 user_id => $user_id,
-                kintai => [],
+                kintai => $month_table,
                 year_month => $year_month,
         });
     }
@@ -67,7 +67,6 @@ get '/kintai' => sub {
         }
     );
 
-    my @kintai;
     my $total_work_minutes = 0;
     while( my $row = $itr->next ) {
 
