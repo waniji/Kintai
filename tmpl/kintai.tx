@@ -8,8 +8,6 @@
 
 <hr />
 
-<h3>勤怠入力</h3>
-
 <form method="post" action="<: uri_for('/kintai') :>">
     <input type="hidden" name="user_id" value="<: $user_id :>" />
     日付 <input type="text" size="8" maxlength="8" name="date" />
@@ -20,8 +18,6 @@
 </form>
 
 <hr />
-
-<h3>勤怠一覧</h3>
 
 <table class="table table-bordered">
   <tr>
