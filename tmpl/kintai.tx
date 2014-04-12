@@ -23,6 +23,7 @@
 <table class="table table-bordered">
   <tr>
     <th class="col-xs-1 col-sm-1 col-md-1">日付</th>
+    <th class="col-xs-1 col-sm-1 col-md-1">曜日</th>
     <th class="col-xs-1 col-sm-1 col-md-1">出勤</th>
     <th class="col-xs-1 col-sm-1 col-md-1">退勤</th>
     <th class="col-xs-1 col-sm-1 col-md-1">休憩</th>
@@ -37,6 +38,7 @@
   <input type="hidden" name="kintai_detail_id" value="<: $kintai[$day].kintai_detail_id :>" />
   <tr class="<: $kintai[$day].line_color :>">
     <td><: $kintai[$day].date :></td>
+    <td><: $kintai[$day].wday :></td>
     <td><: $kintai[$day].attend_time :></td>
     <td><: $kintai[$day].leave_time :></td>
     <td><: $kintai[$day].break_time :></td>
@@ -53,6 +55,7 @@
 : }
   <tr class="success">
     <td>合計</td>
+    <td></td>
     <td></td>
     <td></td>
     <td></td>

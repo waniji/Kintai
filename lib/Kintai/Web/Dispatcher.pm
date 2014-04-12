@@ -211,6 +211,9 @@ sub create_month_table {
     my $month = substr( $year_month, 4, 2 );
     my $last_day  = Time::Piece->strptime( $year.$month, '%Y%m' )->month_last_day;
 
+    #TODO 定数化
+    my @week_names = qw/日 月 火 水 木 金 土/;
+
     my $month_table;
     for my $day ( "01".."$last_day" ) {
 
@@ -228,6 +231,7 @@ sub create_month_table {
 
         $month_table->{$year.$month.$day} = {
             date => format_date( $year.$month.$day ),
+            wday => $date->wdayname(@week_names),
             line_color => $line_color,
             remarks => $holiday,
         };
