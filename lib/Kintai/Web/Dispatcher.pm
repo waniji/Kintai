@@ -80,9 +80,8 @@ get '/kintai' => sub {
         my $work_minutes = calc_work_minutes( $row->attend_time, $row->leave_time, $break_minutes );
         $total_work_minutes += $work_minutes;
 
-        my $month_row = $month_table->{ $year_month.$row->day };
+        my $month_row = $month_table->{ $row->day };
         $month_row->{kintai_detail_id} = $row->id;
-        $month_row->{date} = format_date( $year_month.$row->day );
         $month_row->{attend_time} = format_time($row->attend_time);
         $month_row->{leave_time} = format_time($row->leave_time);
         $month_row->{break_time} = format_jp_time_from_minutes( $break_minutes );
@@ -130,7 +129,7 @@ post '/kintai' => sub {
     $c->db->insert(
         kintai_detail => {
             kintai_id => $kintai->id,
-            day => sprintf( "%02d", $c->req->param('day') ),
+            day => $c->req->param('day'),
             attend_time => $c->req->param('attend_time'),
             leave_time => $c->req->param('leave_time'),
             remarks => $c->req->param('remarks'),
@@ -215,7 +214,7 @@ sub create_month_table {
     my @week_names = qw/日 月 火 水 木 金 土/;
 
     my $month_table;
-    for my $day ( "01".."$last_day" ) {
+    for my $day ( 1..$last_day ) {
 
         my $date = Time::Piece->strptime( $year.$month.$day, '%Y%m%d' );
         my $holiday = isHoliday( $year, $month+0, $day+0, 1 );
@@ -229,8 +228,7 @@ sub create_month_table {
             }
         };
 
-        $month_table->{$year.$month.$day} = {
-            date => format_date( $year.$month.$day ),
+        $month_table->{$day} = {
             wday => $date->wdayname(@week_names),
             line_color => $line_color,
             remarks => $holiday,

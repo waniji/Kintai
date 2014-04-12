@@ -11,7 +11,7 @@
 <form method="post" action="<: uri_for('/kintai') :>">
     <input type="hidden" name="user_id" value="<: $user_id :>" />
     <input type="hidden" name="year_month" value="<: $year_month :>" />
-    日付: <: $year_month :><input type="text" size="2" maxlength="2" name="day" />
+    日付: <input type="text" size="2" maxlength="2" name="day" />
     出勤: <input type="text" size="8" maxlength="4" name="attend_time" />
     退勤: <input type="text" size="8" maxlength="4" name="leave_time" />
     備考: <input type="text" size="30" name="remarks" />
@@ -28,16 +28,16 @@
     <th class="col-xs-1 col-sm-1 col-md-1">退勤</th>
     <th class="col-xs-1 col-sm-1 col-md-1">休憩</th>
     <th class="col-xs-1 col-sm-1 col-md-1">実働</th>
-    <th class="col-xs-1 col-sm-1 col-md-2">備考</th>
+    <th class="col-xs-1 col-sm-1 col-md-3">備考</th>
     <th class="col-xs-1 col-sm-1 col-md-1"></th>
   </tr>
-: for $kintai.keys() -> $day {
+: for $kintai.keys().sort(-> $a, $b { $a <=> $b }) -> $day {
   <form method="post" action="<: uri_for('/kintai/delete') :>">
   <input type="hidden" name="user_id" value="<: $user_id :>" />
   <input type="hidden" name="year_month" value="<: $year_month :>" />
   <input type="hidden" name="kintai_detail_id" value="<: $kintai[$day].kintai_detail_id :>" />
   <tr class="<: $kintai[$day].line_color :>">
-    <td><: $kintai[$day].date :></td>
+    <td><: $day :></td>
     <td><: $kintai[$day].wday :></td>
     <td><: $kintai[$day].attend_time :></td>
     <td><: $kintai[$day].leave_time :></td>
