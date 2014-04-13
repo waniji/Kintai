@@ -11,7 +11,12 @@
 <form method="post" action="<: uri_for('/kintai') :>">
     <input type="hidden" name="user_id" value="<: $user_id :>" />
     <input type="hidden" name="year_month" value="<: $year_month :>" />
-    日付: <input type="text" size="2" maxlength="2" name="day" />
+    日付:
+    <select name="day">
+: for $day_list -> $day {
+      <option value="<: $day :>"><: $day :></option>
+: }
+    </select>
     出勤: <input type="text" size="8" maxlength="4" name="attend_time" />
     退勤: <input type="text" size="8" maxlength="4" name="leave_time" />
     備考: <input type="text" size="30" name="remarks" />

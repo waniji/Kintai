@@ -49,6 +49,7 @@ get '/kintai' => sub {
     my $prev = Time::Piece->strptime( $year_month, '%Y%m' )->add_months(-1)->strftime('%Y%m');
 
     my $month_table = create_month_table($year_month);
+    my @day_list = get_day_list( $year_month );
 
     my $kintai = $c->db->single(
         kintai => { user_id => $user_id, year_month => $year_month }
@@ -62,6 +63,7 @@ get '/kintai' => sub {
                 prev => $prev,
                 kintai => $month_table,
                 total_work_time => format_jp_time_from_minutes(0),
+                day_list => \@day_list,
         });
     }
 
@@ -96,6 +98,7 @@ get '/kintai' => sub {
             prev => $prev,
             kintai => $month_table,
             total_work_time => format_jp_time_from_minutes( $total_work_minutes ),
+            day_list => \@day_list,
     });
 };
 
@@ -236,6 +239,11 @@ sub create_month_table {
     }
 
     return $month_table;
+}
+
+sub get_day_list {
+    my $year_month = shift;
+    return 1..Time::Piece->strptime( $year_month, '%Y%m' )->month_last_day;
 }
 
 sub format_date {
