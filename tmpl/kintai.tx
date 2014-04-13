@@ -17,8 +17,28 @@
       <option value="<: $day :>"><: $day :></option>
 : }
     </select>
-    出勤: <input type="text" size="8" maxlength="4" name="attend_time" />
-    退勤: <input type="text" size="8" maxlength="4" name="leave_time" />
+    出勤:
+    <select name="attend_hour">
+: for [ 0..23 ] -> $hour {
+      <option value="<: $hour :>"><: $hour :></option>
+: }
+    </select>
+    <select name="attend_min">
+: for [ 0..59 ] -> $min {
+      <option value="<: $min :>"><: $min :></option>
+: }
+    </select>
+    退勤:
+    <select name="leave_hour">
+: for [ 0..23 ] -> $hour {
+      <option value="<: $hour :>"><: $hour :></option>
+: }
+    </select>
+    <select name="leave_min">
+: for [ 00..59 ] -> $min {
+      <option value="<: $min :>"><: $min :></option>
+: }
+    </select>
     備考: <input type="text" size="30" name="remarks" />
     <input type="submit" value="send" />
 </form>

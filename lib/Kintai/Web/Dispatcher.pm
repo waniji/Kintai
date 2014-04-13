@@ -106,6 +106,8 @@ post '/kintai' => sub {
     my ($c) = @_;
     my $user_id = $c->req->param('user_id');
     my $year_month = $c->req->param('year_month');
+    my $attend_time = sprintf( "%02d%02d", $c->req->param("attend_hour"), $c->req->param("attend_min") );
+    my $leave_time = sprintf( "%02d%02d", $c->req->param("leave_hour"), $c->req->param("leave_min") );
 
     # TODO: トランザクション
 
@@ -133,8 +135,8 @@ post '/kintai' => sub {
         kintai_detail => {
             kintai_id => $kintai->id,
             day => $c->req->param('day'),
-            attend_time => $c->req->param('attend_time'),
-            leave_time => $c->req->param('leave_time'),
+            attend_time => $attend_time,
+            leave_time => $leave_time,
             remarks => $c->req->param('remarks'),
         },
     );
