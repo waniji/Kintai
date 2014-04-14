@@ -8,20 +8,35 @@ use lib File::Spec->catdir(dirname(__FILE__), '../lib');
 use Plack::Builder;
 
 use Kintai::Web;
+use Kintai::API;
 use Kintai;
 use URI::Escape;
 use File::Path ();
 
 my $app = builder {
-    enable 'Plack::Middleware::Static',
-        path => qr{^(?:/static/)},
-        root => File::Spec->catdir(dirname(__FILE__), '..');
-    enable 'Plack::Middleware::Static',
-        path => qr{^(?:/robots\.txt|/favicon\.ico)$},
-        root => File::Spec->catdir(dirname(__FILE__), '..', 'static');
+
     enable 'Plack::Middleware::ReverseProxy';
 
-    Kintai::Web->to_app();
+    my $api = Kintai::API->to_app();
+    my $web = builder {
+        enable 'Plack::Middleware::Static',
+            path => qr{^(?:/static/)},
+            root => File::Spec->catdir(dirname(__FILE__), '..');
+        enable 'Plack::Middleware::Static',
+            path => qr{^(?:/robots\.txt|/favicon\.ico)$},
+            root => File::Spec->catdir(dirname(__FILE__), '..', 'static');
+        Kintai::Web->to_app();
+    };
+
+    sub {
+        my $env = shift;
+        if( $env->{PATH_INFO} =~ m{^/api/} ) {
+            $api->($env);
+        } else {
+            $web->($env);
+        }
+    }
+
 };
 unless (caller) {
     my $port        = 5000;
