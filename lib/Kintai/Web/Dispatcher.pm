@@ -166,11 +166,11 @@ post '/account/logout' => sub {
 sub calc_break_minutes {
     my( $attend_time, $leave_time ) = @_;
 
-    my $attend = Time::Piece->strptime( $attend_time, '%H%M' );
-    my $leave = Time::Piece->strptime( $leave_time, '%H%M' );
+    my $attend = substr( $attend_time, 0, 2 ) * 60 + substr( $attend_time, 2, 2 );
+    my $leave = substr( $leave_time, 0, 2 ) * 60 + substr( $leave_time, 2, 2 );
 
-    my $break_start = Time::Piece->strptime( '1200', '%H%M' );
-    my $break_end = Time::Piece->strptime( '1300', '%H%M' );
+    my $break_start = 12 * 60;
+    my $break_end = 13 * 60;
 
     if( $attend >= $break_end || $break_start >= $leave ) {
         return 0;
@@ -179,20 +179,16 @@ sub calc_break_minutes {
     $attend = ( $attend > $break_start ? $attend : $break_start );
     $leave = ( $break_end > $leave ? $leave : $break_end );
 
-    my $diff = $leave - $attend;
-
-    return $diff->minutes;
+    return $leave - $attend;
 }
 
 sub calc_work_minutes {
     my( $attend_time, $leave_time, $break_minutes ) = @_;
 
-    my $attend = Time::Piece->strptime( $attend_time, '%H%M' );
-    my $leave = Time::Piece->strptime( $leave_time, '%H%M' );
+    my $attend = substr( $attend_time, 0, 2 ) * 60 + substr( $attend_time, 2, 2 );
+    my $leave = substr( $leave_time, 0, 2 ) * 60 + substr( $leave_time, 2, 2 );
 
-    my $diff = $leave - $attend;
-
-    return $diff->minutes - $break_minutes;
+    return $leave - $attend - $break_minutes;
 }
 
 sub format_jp_time_from_minutes {
@@ -253,7 +249,8 @@ sub format_date {
 }
 
 sub format_time {
-    Time::Piece->strptime($_[0], '%H%M')->strftime("%H:%M");
+    return substr( $_[0], 0, 2 ).":".substr( $_[0], 2, 2 );
+#    Time::Piece->strptime($_[0], '%H%M')->strftime("%H:%M");
 }
 
 1;
