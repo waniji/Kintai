@@ -12,6 +12,7 @@ requires 'Test::WWW::Mechanize::PSGI';
 requires 'Text::Xslate', '2.0009';
 requires 'Time::Piece', '1.20';
 requires 'Calendar::Japanese::Holiday';
+requires 'Module::Find';
 requires 'perl', '5.010_001';
 
 on configure => sub {
