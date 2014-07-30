@@ -16,4 +16,7 @@ get  '/kintai' => 'Kintai#index';
 post '/kintai' => 'Kintai#update';
 post '/kintai/delete' => 'Kintai#delete';
 
+get  '/api/users' => 'API#users';
+post '/api/kintai' => 'API#kintai';
+
 1;

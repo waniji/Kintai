@@ -1,13 +1,9 @@
-package Kintai::API::Dispatcher;
+package Kintai::Web::Controller::API;
 use strict;
 use warnings;
-use utf8;
-use Time::Piece;
-use Amon2::Web::Dispatcher::RouterBoom;
-use Calendar::Japanese::Holiday;
 
-get '/api/users' => sub {
-    my ($c) = @_;
+sub users {
+    my ($class, $c) = @_;
     my $itr = $c->db->search(
         user => {
         }, {
@@ -23,8 +19,8 @@ get '/api/users' => sub {
     return $c->render_json(\@users);
 };
 
-post '/api/kintai' => sub {
-    my ($c) = @_;
+sub kintai {
+    my ($class, $c) = @_;
 
     my %params;
     my @require_param_keys = qw/user_id year_month day attend_hour attend_min leave_hour leave_min/;
