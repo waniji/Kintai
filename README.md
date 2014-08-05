@@ -7,15 +7,14 @@ Kintai - 勤怠管理Webアプリケーション
 ソースの取得
 
 ```
-git clone git@bitbucket.org:msasaki/kintai.git
+git clone git@gitub.com:waniji/kintai.git
 cd kintai
 ```
 
 依存モジュールのインストール
 
 ```
-carton install
-
+carton install --development
 ```
 
 DBの作成
