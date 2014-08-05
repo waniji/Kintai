@@ -7,7 +7,6 @@ use Calendar::Japanese::Holiday;
 sub index {
     my ($class, $c) = @_;
 
-    my $user_id = $c->req->param('user_id');
     my $year_month = $c->req->param('year_month') // localtime->strftime("%Y%m");
 
     my $next = Time::Piece->strptime( $year_month, '%Y%m' )->add_months(1)->strftime('%Y%m');
@@ -17,12 +16,11 @@ sub index {
     my @day_list = get_day_list( $year_month );
 
     my $kintai = $c->db->single(
-        kintai => { user_id => $user_id, year_month => $year_month }
+        kintai => { year_month => $year_month }
     );
 
     unless($kintai) {
         return $c->render('kintai.tx' => {
-                user_id => $user_id,
                 year_month => $year_month,
                 next => $next,
                 prev => $prev,
@@ -57,7 +55,6 @@ sub index {
     }
 
     return $c->render('kintai.tx' => {
-            user_id => $user_id,
             year_month => $year_month,
             next => $next,
             prev => $prev,
@@ -69,7 +66,6 @@ sub index {
 
 sub update {
     my ($class, $c) = @_;
-    my $user_id = $c->req->param('user_id');
     my $year_month = $c->req->param('year_month');
     my $attend_time = sprintf( "%02d%02d", $c->req->param("attend_hour"), $c->req->param("attend_min") );
     my $leave_time = sprintf( "%02d%02d", $c->req->param("leave_hour"), $c->req->param("leave_min") );
@@ -77,20 +73,18 @@ sub update {
     # TODO: トランザクション
 
     my $kintai = $c->db->single(
-        kintai => { user_id => $user_id, year_month => $year_month }
+        kintai => { year_month => $year_month }
     );
 
     unless($kintai) {
         $c->db->insert(
             kintai => {
-                user_id => $user_id,
                 year_month => $year_month,
             },
         );
 
         $kintai = $c->db->single(
             kintai => {
-                user_id => $user_id,
                 year_month => $year_month,
             },
         );
@@ -106,12 +100,11 @@ sub update {
         },
     );
 
-    return $c->redirect('/kintai', { user_id => $user_id, year_month => $year_month } );
+    return $c->redirect('/kintai', { year_month => $year_month } );
 }
 
 sub delete {
     my ($class, $c) = @_;
-    my $user_id = $c->req->param('user_id');
     my $year_month = $c->req->param('year_month');
     my $kintai_detail_id = $c->req->param('kintai_detail_id');
 
@@ -119,7 +112,7 @@ sub delete {
         kintai_detail => { id => $kintai_detail_id },
     );
 
-    return $c->redirect('/kintai', { user_id => $user_id, year_month => $year_month } );
+    return $c->redirect('/kintai', { year_month => $year_month } );
 }
 
 sub calc_break_minutes {

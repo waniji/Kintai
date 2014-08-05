@@ -7,7 +7,6 @@ table {
     pk 'id';
     columns (
         'id',
-        'user_id',
         'year_month',
     );
 };
@@ -31,15 +30,6 @@ table {
     columns (
         'name',
         'seq',
-    );
-};
-
-table {
-    name 'user';
-    pk 'id';
-    columns (
-        'id',
-        'name',
     );
 };
 

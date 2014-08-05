@@ -3,13 +3,12 @@
 : override content -> {
 
 <h2><: $year_month :></h2>
-<a href="<: uri_for('/kintai') :>?year_month=<: $prev :>&user_id=<: $user_id :>">prev</a>
-<a href="<: uri_for('/kintai') :>?year_month=<: $next :>&user_id=<: $user_id :>">next</a>
+<a href="<: uri_for('/kintai') :>?year_month=<: $prev :>">prev</a>
+<a href="<: uri_for('/kintai') :>?year_month=<: $next :>">next</a>
 
 <hr />
 
 <form method="post" action="<: uri_for('/kintai') :>">
-    <input type="hidden" name="user_id" value="<: $user_id :>" />
     <input type="hidden" name="year_month" value="<: $year_month :>" />
     日付:
     <select name="day">
@@ -58,7 +57,6 @@
   </tr>
 : for $kintai.keys().sort(-> $a, $b { $a <=> $b }) -> $day {
   <form method="post" action="<: uri_for('/kintai/delete') :>">
-  <input type="hidden" name="user_id" value="<: $user_id :>" />
   <input type="hidden" name="year_month" value="<: $year_month :>" />
   <input type="hidden" name="kintai_detail_id" value="<: $kintai[$day].kintai_detail_id :>" />
   <tr class="<: $kintai[$day].line_color :>">

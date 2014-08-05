@@ -1,11 +1,5 @@
-CREATE TABLE IF NOT EXISTS user (
-    id           INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    name         VARCHAR(255)
-);
-
 CREATE TABLE IF NOT EXISTS kintai (
     id          INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    user_id     INTEGER NOT NULL,
     year_month  CHAR(6) NOT NULL
 );
 
